@@ -2,7 +2,7 @@ import './App.css';
 import handleSubmit from './handle-submit';
 import { useRef, useState, useEffect } from 'react';
  
-import { getDocs, collection } from "@firebase/firestore"
+import { getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
 import { db } from "./firebase-config"
  
 function App() {
@@ -30,23 +30,49 @@ function App() {
   	getUsers();
   }, [users, usersRef] );
  
-  const items = users.map( 
-  	data => {
-  		return ( <li key={data.text}> {data.text}: {data.id} </li> );
-  	}
-  );
-  
+
+	// delete data
+	const handleDelete = async (id) => {
+		await deleteDoc( doc(db, "data", id) ); 
+	};	 
+	
+	// update data
+	const handleEdit = async (id) => {
+		var obj = { text: dataRef.current.value };
+  		await updateDoc( doc(db, "data", id), obj );
+	};
+	 
   return (
     <div className="App">
 		{/* Form */}
-    	<form onSubmit={submithandler}>
-    	<input type= "text" ref={dataRef} />
-    	<button type = "submit">Save</button>
-    	</form>
-		
+		<div>
+			<h1>Create</h1>
+    		<form onSubmit={submithandler}>
+    			<input type= "text" ref={dataRef} />
+    			<button type = "submit">Save</button>
+    		</form>
+		</div>
+				
 		{/* Output*/}
 		<ul>
-			{ items }
+			{ users.map( 
+  				data => {
+  					return ( 
+  					<div key={data.id}>
+  						{/* display */}
+  						<li> {data.text}: {data.id} </li> 
+  						
+  						{/* delete button */}
+  						<button onClick={ () => { handleDelete(data.id) } }>
+  							Delete 
+  						</button>
+  						
+  						{/* update button */}
+  						<button onClick={ () => { handleEdit(data.id) } }>
+  							Update 
+  						</button>
+  					</div> )
+  			} )}
 		</ul>    	
     </div>
   );
