@@ -7,7 +7,7 @@ import { db } from "./firebase-config"
 function App() {
 	// state
 	const [users, setUsers] = useState( [] );
-	const [inFocus, setInFocus] = useState();
+	const [inFocus, setInFocus] = useState(0);
   		// refs
 	const usersRef = collection( db, "data" );
 	const dataRef = useRef();
@@ -28,9 +28,13 @@ function App() {
 		console.log("updated data");
 	};
 
-	// load on startup
-	useEffect( () => loadData(), [] );
- 		
+		// load on startup
+	useEffect( () => {
+		loadData();
+		//handleGet(0);	// begin at end of list
+	}, [] );
+ 	
+ 	// create data	
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		
@@ -45,34 +49,41 @@ function App() {
     		console.log(error);
 		}
 		// update
-		//resetForm();
 		loadData();
-		setInFocus(users.length);
+		resetForm();
+		//setInFocus(users.length);
 	} 
 
 	// delete data
-	const handleDelete = async (id) => {
+	const handleDelete = async () => {
+		let id = users[inFocus].id;
 		await deleteDoc( doc(db, "data", id) ); 
 		loadData();
 		
 		// change focus
-		let length = users.length;
-		if( length > 1 ) {
-			handleGet(length - 2);
+		let length = users.length - 1;
+		if( inFocus === length && length !== 0 ) {
+			handleGet(length - 1);
 		}
+		resetForm(); 
 	};	 
 	
 	// update data
-	const handleEdit = async (id) => {
-		var obj = { text: dataRef.current.value };
+	const handleEdit = async (index) => {
+		let obj = { text: dataRef.current.value };
+		let id = users[inFocus].id;
   		await updateDoc( doc(db, "data", id), obj );
-  		//resetForm();
   		loadData();
+  		resetForm();
+	};
+	  
+	const loadForm = (index) => {	// fill out form with stored data 
+		let data = users[index];
+		dataRef.current.value = data.text;
 	};
 	  
 	const handleGet = (index) => {
-		let data = users[index];
-		dataRef.current.value = data.text;
+		loadForm(index);
 		setInFocus(index);
 	};
 	
@@ -85,14 +96,19 @@ function App() {
 	<div className="App">
 		{/* Form */}
 		<div>
-			<h1>Create</h1>
-    		<form onSubmit={ handleSubmit }>
-    			<input type= "text" ref={dataRef} />
-    			<button type = "submit">Save</button>
+			<h1>CRUD application</h1>
+    		<form onSubmit={handleSubmit}>
+    			<input type="text" ref={dataRef} />    			
+    			{/* create */}
+    			<button type="submit"> Create </button>
     		</form>
 		</div>
+		
+		{/* delete and update */}
+    	<button onClick={handleDelete}> Delete </button>	
+  		<button onClick={handleEdit}> Update </button>
 				
-		{/* Output*/}
+		{/* list output */}
 		<div>
 			{ users.map( 
 				(data, index) => { return ( 
@@ -100,20 +116,8 @@ function App() {
   					{/* display */}
   					<span> {index} : {data.text} , {data.id} </span> 
   					
-  					{/* delete button */}
-  					<button onClick={ () => {handleDelete(data.id)} }>
-  						Delete 
-  					</button>
-  					
-  					{/* update button */}
-  					<button onClick={ () => {handleEdit(data.id); handleGet(index)} }>
-  						Update 
-  					</button>
-  					
-  					{/* get button */}
-  					<button onClick={ () => {handleGet(index)} } className={styleGet(index)}>
-  						Get
-  					</button>
+  					{/* Selection button */}
+  					<button onClick={ () => {handleGet(index)} } className={styleGet(index)}> Select </button>
   				</div> )}
   			)}
 		</div>    	
