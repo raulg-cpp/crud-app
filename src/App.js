@@ -1,81 +1,112 @@
 import './App.css';
-import handleSubmit from './handle-submit';
 import { useRef, useState, useEffect } from 'react';
  
-import { getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
+import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
 import { db } from "./firebase-config"
  
 function App() {
 	// state
-  const [users, setUsers] = useState( [] );
-  const usersRef = collection( db, "data" );
-  const dataRef = useRef();
+	const [users, setUsers] = useState( [] );
+  		// refs
+	const usersRef = collection( db, "data" );
+	const dataRef = useRef();
  
-  // send data 
-  const submithandler = (e) => {
-    e.preventDefault()
-    handleSubmit(dataRef.current.value)
-    dataRef.current.value = ""
-  }
- 
-  // load data
-  useEffect( () => {
-  	const getUsers = async () => {
-  		const data = await getDocs(usersRef);
-  		var elem = data.docs.map( 
-  			(doc) => ( { ...doc.data(), id: doc.id } )
-  		);
-  		setUsers( elem );
-  	};
-  	getUsers();
-  }, [users, usersRef] );
- 
+  	// display data
+	const resetForm = () => { dataRef.current.value = "" };
+	
+	const loadData = () => {
+		const getUsers = async () => {
+  			const data = await getDocs(usersRef);
+  			var elem = data.docs.map( 
+  				(doc) => ( { ...doc.data(), id: doc.id } )
+  			);
+  			setUsers( elem );
+		};
+		getUsers();
+		// api calls
+		console.log("updated data");
+	};
+
+	// load on startup
+	useEffect( () => loadData(), [] );
+ 		
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		
+		// load data
+		var input = dataRef.current.value;
+		const ref = collection(db, "data");
+		
+		try {
+    		var data = { text: input };
+    		addDoc(ref, data);
+		} catch(error) {
+    		console.log(error);
+		}
+		// update
+		resetForm();
+		loadData();
+	} 
 
 	// delete data
 	const handleDelete = async (id) => {
 		await deleteDoc( doc(db, "data", id) ); 
+		loadData();
 	};	 
 	
 	// update data
 	const handleEdit = async (id) => {
 		var obj = { text: dataRef.current.value };
   		await updateDoc( doc(db, "data", id), obj );
+  		resetForm();
+  		loadData();
 	};
-	 
-  return (
-    <div className="App">
+	  
+	// Form submit handler
+	const handleGet = (index) => {
+		let data = users[index];
+		dataRef.current.value = data.text;
+	};
+	
+	// === JSX ===
+	return (
+	<div className="App">
 		{/* Form */}
 		<div>
 			<h1>Create</h1>
-    		<form onSubmit={submithandler}>
+    		<form onSubmit={ handleSubmit }>
     			<input type= "text" ref={dataRef} />
     			<button type = "submit">Save</button>
     		</form>
 		</div>
 				
 		{/* Output*/}
-		<ul>
+		<div>
 			{ users.map( 
-  				data => {
-  					return ( 
-  					<div key={data.id}>
-  						{/* display */}
-  						<li> {data.text}: {data.id} </li> 
-  						
-  						{/* delete button */}
-  						<button onClick={ () => { handleDelete(data.id) } }>
-  							Delete 
-  						</button>
-  						
-  						{/* update button */}
-  						<button onClick={ () => { handleEdit(data.id) } }>
-  							Update 
-  						</button>
-  					</div> )
-  			} )}
-		</ul>    	
-    </div>
-  );
+				(data, index) => { return ( 
+  				<div key={data.id}>
+  					{/* display */}
+  					<span> {index} : {data.text} , {data.id} </span> 
+  					
+  					{/* delete button */}
+  					<button onClick={ () => { handleDelete(data.id) } }>
+  						Delete 
+  					</button>
+  					
+  					{/* update button */}
+  					<button onClick={ () => { handleEdit(data.id)} }>
+  						Update 
+  					</button>
+  					
+  					{/* get button */}
+  					<button onClick={ () => {handleGet(index)} } className="getButton">
+  						Get
+  					</button>
+  				</div> )}
+  			)}
+		</div>    	
+	</div>
+	);
 }
  
 export default App;
