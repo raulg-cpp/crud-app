@@ -2,6 +2,6 @@
   text-align: center;
 }
 
-.getButton:focus { 
+.buttonFocus { 
 	background-color: blue;
 }

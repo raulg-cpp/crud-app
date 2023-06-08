@@ -7,6 +7,7 @@ import { db } from "./firebase-config"
 function App() {
 	// state
 	const [users, setUsers] = useState( [] );
+	const [inFocus, setInFocus] = useState();
   		// refs
 	const usersRef = collection( db, "data" );
 	const dataRef = useRef();
@@ -44,29 +45,40 @@ function App() {
     		console.log(error);
 		}
 		// update
-		resetForm();
+		//resetForm();
 		loadData();
+		setInFocus(users.length);
 	} 
 
 	// delete data
 	const handleDelete = async (id) => {
 		await deleteDoc( doc(db, "data", id) ); 
 		loadData();
+		
+		// change focus
+		let length = users.length;
+		if( length > 1 ) {
+			handleGet(length - 2);
+		}
 	};	 
 	
 	// update data
 	const handleEdit = async (id) => {
 		var obj = { text: dataRef.current.value };
   		await updateDoc( doc(db, "data", id), obj );
-  		resetForm();
+  		//resetForm();
   		loadData();
 	};
 	  
-	// Form submit handler
 	const handleGet = (index) => {
 		let data = users[index];
 		dataRef.current.value = data.text;
+		setInFocus(index);
 	};
+	
+	const styleGet = (index) => {
+		return index === inFocus ? "buttonFocus" : "";
+	}
 	
 	// === JSX ===
 	return (
@@ -89,17 +101,17 @@ function App() {
   					<span> {index} : {data.text} , {data.id} </span> 
   					
   					{/* delete button */}
-  					<button onClick={ () => { handleDelete(data.id) } }>
+  					<button onClick={ () => {handleDelete(data.id)} }>
   						Delete 
   					</button>
   					
   					{/* update button */}
-  					<button onClick={ () => { handleEdit(data.id)} }>
+  					<button onClick={ () => {handleEdit(data.id); handleGet(index)} }>
   						Update 
   					</button>
   					
   					{/* get button */}
-  					<button onClick={ () => {handleGet(index)} } className="getButton">
+  					<button onClick={ () => {handleGet(index)} } className={styleGet(index)}>
   						Get
   					</button>
   				</div> )}
