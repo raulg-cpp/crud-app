@@ -4,9 +4,22 @@ import { useState, useEffect } from 'react';
 import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
 import { db } from "./firebase-config"
 
-// Form input fields
-const INPUT_NAMES = ["name", "surname", "email"];
+//==== Form parameters
+const INPUT_NAMES = ["name", "surname", "email", "telephone"];	// Defines properties of stored objects
+
+const INPUT_TYPES = ["text", "text", "email", "tel"];		
+
+const INPUT_PATTERNS = ["^[A-Z][a-z]+([ ][A-Z][a-z]+)*$",			// Words
+					  	"^[A-Z][a-z]+([ ][A-Z][a-z]+)*$",			// Words  
+					  	"[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$",	// Email
+					  	"^[0-9]{1,3}-[0-9]{3}-[0-9]{3}-[0-9]{4}$"];	// Telephone 
  
+const INPUT_PLACEHOLDER = [	"John Jim", 
+							"Doe Poe",
+							"user@host.domain", 
+							"1-100-200-3000" ];
+ 
+//==== App
 function App() {
 	// state
 	const [dataBase, setDataBase] = useState( [] );
@@ -104,17 +117,21 @@ function App() {
 			<h1>CRUD application</h1>
     		{/* inputs */}
     		<form onSubmit={handleSubmit}>
-				{ INPUT_NAMES.map( key => (
+				{ INPUT_NAMES.map( (key, index) => { 
+					return (
     				<label key={key}> 
     					<span>{key}</span>
 						<input 
-							type="text" 
+							pattern={ INPUT_PATTERNS[index] }
+							placeholder={ INPUT_PLACEHOLDER[index] }
+							type={ INPUT_TYPES[index] } 
 							name={key} 
 							value={inputs[key] || ""} 
 							onChange={handleChange}
+							required
 						/>  
 					</label> ) 					
-				)}
+				})}
 			
     			{/* create */}
     			<button type="submit"> Create </button>
