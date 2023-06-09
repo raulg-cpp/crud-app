@@ -97,28 +97,21 @@ button:active {
 
 .tableList {
 	width: 100%;
-	
 	margin-top: 11px;
 	padding-top: 0px;
 	
 	border-collapse: collapse; 
 	border: none;
 	border-top: 1px solid gray;
-	
-	color: gray;
-
-	thead {
-		//border-bottom: 1px solid gray;
-	
-		th {
-			padding-top: 10px;
-			font-size: 18px;
-			color: black;
-		}
+		
+	th {
+		padding-top: 10px;
+		font-size: 18px;
+		color: black;
 	}
 	
 	tr {
+		color: gray;
 		border-top: 1px dotted gray;
-		//background-color: blue;
 	}
 }
