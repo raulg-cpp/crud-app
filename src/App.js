@@ -53,7 +53,7 @@ function App() {
 	// eslint-disable-next-line
 	useEffect( () => { loadData() }, [] ); 
  	
- 	// 2. Create data	
+ 	// 2. Create data [need to check regex before submiting]	
 	const handleSubmit = (event) => {
 		event.preventDefault();		
 		try {
@@ -65,7 +65,7 @@ function App() {
 		loadData();
 		resetForm();
 	} 
-	
+
 		// update inputs
 	const handleChange = (event) => {
 		const name = event.target.name;
@@ -90,7 +90,7 @@ function App() {
 		}
 	};	 
 	
-	// 3. Update data
+	// 3. Update data // [need to check regex before submiting]
 	const handleEdit = async (index) => {	
 		let length = dataBase.length;
 		if( length > 0  && inFocus != null ) {				
