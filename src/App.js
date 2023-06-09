@@ -1,50 +1,49 @@
 import './App.css';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
  
 import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
 import { db } from "./firebase-config"
+
+// Form input fields
+const INPUT_NAMES = ["name", "surname", "email"];
  
 function App() {
 	// state
-	const [users, setUsers] = useState( [] );
+	const [dataBase, setDataBase] = useState( [] );
 	const [inFocus, setInFocus] = useState(0);
 	const [inputs, setInputs] = useState( {} );
   		// refs
-	const usersRef = collection( db, "data" );
+	const dbRef = collection( db, "data" );
  
   	// display data
 	const resetForm = () => {
-		setInputs({ 
-			text1: "",
-			text2: ""
-		});
+		let _inputs = {};
+		for( const key in inputs ) {
+			_inputs[key] = "";
+		}
+		setInputs(_inputs);
 	};
 	
 	const loadData = () => {
-		const getUsers = async () => {
-  			const data = await getDocs(usersRef);
-  			let elem = data.docs.map( 
-  				(doc) => ( { ...doc.data(), id: doc.id } )
-  			);
+		const getData = async () => {
+  			const data = await getDocs(dbRef);
+  			let array = data.docs.map( (doc) => ({id: doc.id, ...doc.data()}) );
   			// api calls
-  			setUsers( elem );
+  			setDataBase( array );
   			console.log("updated data");
 		};
-		getUsers();
+		getData();
 	};
 
 		// load on startup
-	useEffect( () => {
-		loadData();
-	}, [] );
+	useEffect( () => { loadData() }, [] );
  	
  	// create data	
 	const handleSubmit = (event) => {
-		event.preventDefault();
-		
+		event.preventDefault();		
 		// load data
 		try {
-    		addDoc(usersRef, inputs );
+    		addDoc(dbRef, inputs );
 		} catch(error) {
     		console.log(error);
 		}
@@ -57,17 +56,16 @@ function App() {
 		const name = event.target.name;
 		const value = event.target.value;
 		setInputs( curr_inputs => ({...curr_inputs, [name]: value}) );
-		console.log( inputs );
 	};
 
 	// delete data
 	const handleDelete = async () => {
-		let id = users[inFocus].id;
+		let id = dataBase[inFocus].id;
 		await deleteDoc( doc(db, "data", id) ); 
 		loadData();
 		
 		// change focus
-		let length = users.length - 1;
+		let length = dataBase.length - 1;
 		if( inFocus === length && length !== 0 ) {
 			handleGet(length - 1);
 		}
@@ -75,28 +73,22 @@ function App() {
 	};	 
 	
 	// update data
-	const handleEdit = async (index) => {
-		let obj = { 
-			text1: inputs.text1, 
-			text2: inputs.text2
-		};
-		
-		let id = users[inFocus].id;
-  		await updateDoc( doc(db, "data", id), obj );
+	const handleEdit = async (index) => {		
+		let id = dataBase[inFocus].id;
+  		await updateDoc( doc(db, "data", id), inputs );
   		loadData();
   		resetForm();
 	};
-	  
-	const loadForm = (index) => {	// fill out form with stored data 
-		let data = users[index];
-		setInputs( { 
-			text1: data.text1, 
-			text2: data.text2 
-		});
-	};
-	  
+	  	  
 	const handleGet = (index) => {
-		loadForm(index);
+		// load form		
+		let _inputs = {};
+		for( const key of INPUT_NAMES ) {
+			_inputs[key] = dataBase[index][key];
+		}	
+		setInputs(_inputs);
+		
+		// highlight
 		setInFocus(index);
 	};
 	
@@ -110,26 +102,20 @@ function App() {
 		{/* Form */}
 		<div>
 			<h1>CRUD application</h1>
+    		{/* inputs */}
     		<form onSubmit={handleSubmit}>
-				{/* Form inputs */}
-    			<label>data1:
-					<input 
-						type="text" 
-						name="text1" 
-						value={inputs.text1 || ""} 
-						onChange={handleChange}
-					/>  
-				</label> 			
-    			
-    			<label>data2:
-					<input 
-						type="text" 
-						name="text2" 
-						value={inputs.text2 || ""} 
-						onChange={handleChange}
-					/>  
-				</label>
-    			
+				{ INPUT_NAMES.map( key => (
+    				<label key={key}> 
+    					<span>{key}</span>
+						<input 
+							type="text" 
+							name={key} 
+							value={inputs[key] || ""} 
+							onChange={handleChange}
+						/>  
+					</label> ) 					
+				)}
+			
     			{/* create */}
     			<button type="submit"> Create </button>
     		</form>
@@ -141,16 +127,24 @@ function App() {
 				
 		{/* list output */}
 		<div>
-			{ users.map( 
-				(data, index) => { return ( 
-  				<div key={data.id}>
-  					{/* display */}
-  					<span> {index} : {data.text1} , {data.text2} , {data.id} </span> 
+			{ dataBase.map( (data, index) => {
+				// properties
+				const outputList = INPUT_NAMES.map( name => {
+					return ( <span key={name}> { data[name] } </span> )	
+				});
+				
+				// display
+				const id = data.id; 
+				
+				return (
+				<div key={id} className={styleGet(index)}>
+  					{ outputList }
   					
-  					{/* Selection button */}
-  					<button onClick={ () => {handleGet(index)} } className={styleGet(index)}> Select </button>
-  				</div> )}
-  			)}
+  					<button onClick={ () => {handleGet(index)} }> 
+  						Select
+  					</button>
+  				</div>); 
+  			})}
 		</div>    	
 	</div>
 	);
