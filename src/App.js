@@ -18,7 +18,7 @@ function App() {
 	
 	/* variables */
 	const [dataBase, setDataBase] = useState( [] );
-	const [inFocus, setInFocus] = useState(0);
+	const [inFocus, setInFocus] = useState(null);
 	const [inputs, setInputs] = useState( {} );
   	
   	/* Refs */
@@ -33,6 +33,9 @@ function App() {
 			_inputs[key] = "";
 		}
 		setInputs(_inputs);
+		
+		// disable update and delete
+		setInFocus(null);
 	};
 	
 	const loadData = () => {
@@ -73,7 +76,7 @@ function App() {
 	// 2. Delete data
 	const handleDelete = async () => {
 		let length = dataBase.length;
-		if( length > 0 ) {
+		if( length > 0 && inFocus != null ) {
 			let id = dataBase[inFocus].id;
 			await deleteDoc( doc(db, "data", id) ); 
 			loadData();
@@ -90,7 +93,7 @@ function App() {
 	// 3. Update data
 	const handleEdit = async (index) => {	
 		let length = dataBase.length;
-		if( length > 0 ) {				
+		if( length > 0  && inFocus != null ) {				
 			let id = dataBase[inFocus].id;
   			await updateDoc( doc(db, "data", id), inputs );
   			loadData();
@@ -146,7 +149,8 @@ function App() {
 			<div className="submitButtons">
 				<button className="create" type="submit" form="input_fields"> Create </button>	
     			<button className="delete" onClick={handleDelete}> Delete </button>	
-  				<button className="" onClick={handleEdit}> Update </button>
+  				<button className="update" onClick={handleEdit}> Update </button>
+  				<button className="" onClick={resetForm}> Clear </button>
     		</div>				
 			{/* list output */}
 			
