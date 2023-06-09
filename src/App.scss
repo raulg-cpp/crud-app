@@ -1,0 +1,124 @@
+// Outline
+
+.App {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+	background-color: #e6fff2;
+}
+
+.mainBox {
+	text-align: center;
+	width: 100%;
+	max-width: 900px;
+	
+	padding: 10px;
+	border-radius: 10px;
+	
+	background-color: white;
+	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.2);
+}
+
+// Form
+
+.inputForm {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+
+	.inputList {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 400px;
+		
+		label {
+			margin-bottom: 10px;
+			display: flex;
+			flex-direction: column; 	
+		}
+		
+		input {
+			padding: 4px;
+			border: 1px solid lighten(gray, 30%);
+			border-radius: 4px;
+			color: darken(gray, 30%);
+		}
+		span {
+			vertical-align: middle;
+			text-align: left;
+			font-weight: bold;
+		}
+	}
+}
+
+// buttons
+button {
+	margin: 2px;
+	height: 30px;
+	width: 90px;
+	border: none;
+	border-radius: 5px;
+}
+
+button:hover {
+	filter: brightness(85%);
+}
+
+button:active {
+	filter: brightness(70%);
+	outline: 3px solid #99ffff;
+}
+
+
+.submitButtons {
+	width: 100%;	
+	// variants
+	.delete {
+		background-color: red;
+		color: white;
+	}
+	.create {
+		background-color: green;
+		color: white;
+	}
+}
+
+// Table
+.focusBtn { 
+	background-color: blue;
+	color: white;
+}
+
+.focusText {
+	color: blue;
+}
+
+.tableList {
+	width: 100%;
+	
+	margin-top: 11px;
+	padding-top: 0px;
+	
+	border-collapse: collapse; 
+	border: none;
+	border-top: 1px solid gray;
+	
+	color: gray;
+
+	thead {
+		//border-bottom: 1px solid gray;
+	
+		th {
+			padding-top: 10px;
+			font-size: 18px;
+			color: black;
+		}
+	}
+	
+	tr {
+		border-top: 1px dotted gray;
+		//background-color: blue;
+	}
+}
