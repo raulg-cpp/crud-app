@@ -8,51 +8,57 @@ function App() {
 	// state
 	const [users, setUsers] = useState( [] );
 	const [inFocus, setInFocus] = useState(0);
+	const [inputs, setInputs] = useState( {} );
   		// refs
 	const usersRef = collection( db, "data" );
-	const dataRef = useRef();
  
   	// display data
-	const resetForm = () => { dataRef.current.value = "" };
+	const resetForm = () => {
+		setInputs({ 
+			text1: "",
+			text2: ""
+		});
+	};
 	
 	const loadData = () => {
 		const getUsers = async () => {
   			const data = await getDocs(usersRef);
-  			var elem = data.docs.map( 
+  			let elem = data.docs.map( 
   				(doc) => ( { ...doc.data(), id: doc.id } )
   			);
+  			// api calls
   			setUsers( elem );
+  			console.log("updated data");
 		};
 		getUsers();
-		// api calls
-		console.log("updated data");
 	};
 
 		// load on startup
 	useEffect( () => {
 		loadData();
-		//handleGet(0);	// begin at end of list
 	}, [] );
  	
  	// create data	
-	const handleSubmit = (e) => {
-		e.preventDefault();
+	const handleSubmit = (event) => {
+		event.preventDefault();
 		
 		// load data
-		var input = dataRef.current.value;
-		const ref = collection(db, "data");
-		
 		try {
-    		var data = { text: input };
-    		addDoc(ref, data);
+    		addDoc(usersRef, inputs );
 		} catch(error) {
     		console.log(error);
 		}
 		// update
 		loadData();
 		resetForm();
-		//setInFocus(users.length);
 	} 
+	
+	const handleChange = (event) => {
+		const name = event.target.name;
+		const value = event.target.value;
+		setInputs( curr_inputs => ({...curr_inputs, [name]: value}) );
+		console.log( inputs );
+	};
 
 	// delete data
 	const handleDelete = async () => {
@@ -70,7 +76,11 @@ function App() {
 	
 	// update data
 	const handleEdit = async (index) => {
-		let obj = { text: dataRef.current.value };
+		let obj = { 
+			text1: inputs.text1, 
+			text2: inputs.text2
+		};
+		
 		let id = users[inFocus].id;
   		await updateDoc( doc(db, "data", id), obj );
   		loadData();
@@ -79,7 +89,10 @@ function App() {
 	  
 	const loadForm = (index) => {	// fill out form with stored data 
 		let data = users[index];
-		dataRef.current.value = data.text;
+		setInputs( { 
+			text1: data.text1, 
+			text2: data.text2 
+		});
 	};
 	  
 	const handleGet = (index) => {
@@ -98,7 +111,25 @@ function App() {
 		<div>
 			<h1>CRUD application</h1>
     		<form onSubmit={handleSubmit}>
-    			<input type="text" ref={dataRef} />    			
+				{/* Form inputs */}
+    			<label>data1:
+					<input 
+						type="text" 
+						name="text1" 
+						value={inputs.text1 || ""} 
+						onChange={handleChange}
+					/>  
+				</label> 			
+    			
+    			<label>data2:
+					<input 
+						type="text" 
+						name="text2" 
+						value={inputs.text2 || ""} 
+						onChange={handleChange}
+					/>  
+				</label>
+    			
     			{/* create */}
     			<button type="submit"> Create </button>
     		</form>
@@ -114,7 +145,7 @@ function App() {
 				(data, index) => { return ( 
   				<div key={data.id}>
   					{/* display */}
-  					<span> {index} : {data.text} , {data.id} </span> 
+  					<span> {index} : {data.text1} , {data.text2} , {data.id} </span> 
   					
   					{/* Selection button */}
   					<button onClick={ () => {handleGet(index)} } className={styleGet(index)}> Select </button>
