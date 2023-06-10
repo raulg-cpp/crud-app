@@ -25,7 +25,7 @@ $break-width: 900px;
 }
 
 /* Responsive */
-@media (max-width: $break-width) {
+@media (max-width: $break-width) { // Mobile screen
 	.App {
 		background-color: none;
 		width: 100%;
