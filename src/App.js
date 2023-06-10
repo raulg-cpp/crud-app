@@ -9,17 +9,22 @@ import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebas
 import { db } from "./firebase-config"
 
 /* Other */
-import { INPUT_NAMES, INPUT_TYPES, INPUT_PATTERNS, INPUT_PLACEHOLDER } from "./constants"
+import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER } from "./constants"
  
 //==== App ====
+function initFlags() {
+	return Array( INPUT_NAMES.length ).fill(true);
+}
+
 
 function App() {
 	//--- I. State ---
 	
 	/* variables */
 	const [dataBase, setDataBase] = useState( [] );
-	const [inFocus, setInFocus] = useState(null);
+	const [inFocus, setInFocus] = useState(null);		// no selection
 	const [inputs, setInputs] = useState( {} );
+	const [inputFlags, setInputFlags] = useState( initFlags() );
   	
   	/* Refs */
 	const dbRef = collection( db, "data" );
@@ -33,10 +38,11 @@ function App() {
 			_inputs[key] = "";
 		}
 		setInputs(_inputs);
+		setInputFlags( initFlags() );
 		
 		// disable update and delete
 		setInFocus(null);
-	};
+	}
 	
 	const loadData = () => {
 		const getData = async () => {
@@ -47,31 +53,53 @@ function App() {
   			console.log("updated output");
 		};
 		getData();
-	};
+	}
 
 	/* Load on startup */
 	// eslint-disable-next-line
 	useEffect( () => { loadData() }, [] ); 
  	
  	// 2. Create data [need to check regex before submiting]	
+ 	const checkInputs = () => {
+ 		var output = true;
+ 		
+ 		// scan inputs
+		let flags = INPUT_NAMES.map( (key, i) => {
+			let regex = new RegExp( INPUT_PATTERNS[i] ); 
+			let check = regex.test( inputs[key] );
+			
+			if( !check && output ) { 
+				output = false;
+				//alert("Incorrect input(s)");	// Error message
+			}
+			return check;		
+		});
+
+		setInputFlags(flags);
+		return output;
+ 	}
+ 	
 	const handleSubmit = (event) => {
-		event.preventDefault();		
-		try {
-    		addDoc(dbRef, inputs );
-		} catch(error) {
-    		console.log(error);
+		event.preventDefault();	
+		if( checkInputs() ) {
+			// load data	
+			try {
+    			addDoc(dbRef, inputs );
+			} catch(error) {
+    			console.log(error);
+			}
+			// update output
+			loadData();
+			resetForm();
 		}
-		// update
-		loadData();
-		resetForm();
-	} 
+	}
 
 		// update inputs
 	const handleChange = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
 		setInputs( curr_inputs => ({...curr_inputs, [name]: value}) );
-	};
+	}
 
 	// 2. Delete data
 	const handleDelete = async () => {
@@ -88,18 +116,20 @@ function App() {
 			}
 			resetForm(); 
 		}
-	};	 
+	}	 
 	
 	// 3. Update data // [need to check regex before submiting]
-	const handleEdit = async (index) => {	
-		let length = dataBase.length;
-		if( length > 0  && inFocus != null ) {				
-			let id = dataBase[inFocus].id;
-  			await updateDoc( doc(db, "data", id), inputs );
-  			loadData();
-  			resetForm();
+	const handleEdit = async (index) => {
+		if( checkInputs() ) {	
+			let length = dataBase.length;
+			if( length > 0  && inFocus != null ) {				
+				let id = dataBase[inFocus].id;
+  				await updateDoc( doc(db, "data", id), inputs );
+  				loadData();
+  				resetForm();
+  			}
   		}
-	};
+	}
 	  	  
 	const handleGet = (index) => {
 		// load form		
@@ -108,13 +138,19 @@ function App() {
 			_inputs[key] = dataBase[index][key];
 		}	
 		setInputs(_inputs);
+		setInputFlags( initFlags() );
 		
 		// highlight
 		setInFocus(index);
-	};
+	}
 	
+	// 4. Variable styles 
 	const styleGet = (index, style) => {
 		return index === inFocus ? style : "";
+	}
+	
+	const styleError = (index) => {
+		return inputFlags.length > 0 && inputFlags[index] ? "" : "errorStyle";  
 	}
 	
 	//--- III. JSX ----
@@ -130,14 +166,18 @@ function App() {
 						return (
     					<label key={key}> 
     						<span>{key}</span>
+							
+							{/* Input fields:  
+								pattern={ INPUT_PATTERNS[index] } 	[only works for submit]
+								type={ INPUT_TYPES[index] }			[has additional filters]
+								min="1"								[no use without number type]
+							*/}
 							<input 
-								pattern={ INPUT_PATTERNS[index] }
+								className={ styleError(index) }
 								placeholder={ INPUT_PLACEHOLDER[index] }
-								type={ INPUT_TYPES[index] } 
 								name={key} 
 								value={inputs[key] || ""} 
 								onChange={handleChange}
-								min="1"
 								required
 							/>  
 						</label> ) 					
@@ -154,7 +194,7 @@ function App() {
     		</div>				
 			{/* list output */}
 			
-			<table className="tableList" cellspacing="0" cellpadding="7">
+			<table className="tableList" cellSpacing="0" cellPadding="7">
 				{/* header */}
 				<thead>
 				{ dataBase.length === 0 ? (<></>) : (
@@ -168,10 +208,10 @@ function App() {
   			
   				<tbody>
   				{/* content */}
-				{ dataBase.map( (data, i) => {
+				{ dataBase.map( (data, index) => {
 					// object properties
 					const outputList = INPUT_NAMES.map( name => {
-						return ( <td key={name} className={ styleGet(i, "focusText") }> 
+						return ( <td key={name} className={ styleGet(index, "focusText") }> 
 									{ data[name] } 
 								</td> )	
 					});
@@ -182,8 +222,8 @@ function App() {
 					<tr key={id}>
   						{ outputList }
   						<td>
-  							<button className={ styleGet(i, "focusBtn") } 
-  									onClick={ () => {handleGet(i)} }> 
+  							<button className={ styleGet(index, "focusBtn") } 
+  									onClick={ () => {handleGet(index)} }> 
   								Select
   							</button>
   						</td>

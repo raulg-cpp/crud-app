@@ -8,6 +8,8 @@ $break-width: 900px;
 	align-items: center;
 	min-width: 700px;
 	background-color: #e6fff2;
+	min-height: 700px;
+	width: 100%;
 }
 
 .mainBox {
@@ -41,6 +43,11 @@ $break-width: 900px;
 
 
 // Form
+
+.errorStyle {
+	outline: 2px solid red !important;
+	//background-color: red;
+}
 
 .inputForm {
 	display: flex;
