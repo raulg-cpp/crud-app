@@ -68,10 +68,7 @@ function App() {
 			let regex = new RegExp( INPUT_PATTERNS[i] ); 
 			let check = regex.test( inputs[key] );
 			
-			if( !check && output ) { 
-				output = false;
-				//alert("Incorrect input(s)");	// Error message
-			}
+			if( !check && output ) { output = false };
 			return check;		
 		});
 
@@ -150,7 +147,7 @@ function App() {
 	}
 	
 	const styleError = (index) => {
-		return inputFlags.length > 0 && inputFlags[index] ? "" : "errorStyle";  
+		return inputFlags.length > 0 && inputFlags[index] ? "" : "errorField";  
 	}
 	
 	//--- III. JSX ----
@@ -167,11 +164,7 @@ function App() {
     					<label key={key}> 
     						<span>{key}</span>
 							
-							{/* Input fields:  
-								pattern={ INPUT_PATTERNS[index] } 	[only works for submit]
-								type={ INPUT_TYPES[index] }			[has additional filters]
-								min="1"								[no use without number type]
-							*/}
+							{/* Input fields */}
 							<input 
 								className={ styleError(index) }
 								placeholder={ INPUT_PLACEHOLDER[index] }
