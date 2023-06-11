@@ -88,6 +88,8 @@ https://blog.logrocket.com/build-crud-application-react-firebase-web-sdk-v9/
 
 https://ibjects.medium.com/reactjs-crud-application-using-firebase-firestore-database-authentication-and-hosting-9e464af5e181
 
+https://www.opensourceforu.com/2022/12/build-a-web-application-on-firebase/
+
 __Simple tutorials__:
 
 _topic_:
