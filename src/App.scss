@@ -2,15 +2,47 @@
 $break-width: 900px;
 $background: #e6fff2;
 
+.watermark {
+	position: absolute;
+	color: white;
+	background-color: darken(white, 15%);
+	opacity: 0.5;
+	font-size: 64px;
+	pointer-events: none;
+}
+
 // Outline
 .App {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+		
 	min-width: 700px;
-	background-color: $background;
 	min-height: 700px;
-	width: 100%;
+	
+	background-color: $background;
+	padding: 30px;
+}
+
+.title {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	vertical-align: middle;
+	padding-bottom: 10px;
+	
+	.text {
+		padding-left: 10px;
+		color: darken(#66ccff, 20%);
+	}
+	
+	.logo {
+		width: 100%;
+		max-width: 100px;
+		display: inline;
+		aspect-ratio: 1/1;
+	}
 }
 
 .mainBox {
@@ -18,10 +50,12 @@ $background: #e6fff2;
 	width: 100%;
 	max-width: $break-width;
 	
-	padding: 10px;
 	padding-top: 20px;
-	border-radius: 10px;
+	pading-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
 	
+	border-radius: 10px;
 	background-color: white;
 	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.2);
 }
@@ -30,7 +64,7 @@ $background: #e6fff2;
 @media (max-width: $break-width) { 
 	// Mobile screen
 	.App {
-		background-color: none;
+		background-color: $background;
 		width: 100%;
 		height: 100%;
 	}
@@ -41,10 +75,10 @@ $background: #e6fff2;
 		height: 100%;
 		width: 100%;
 		box-shadow: none;
-		background-color: darken( $background, 5% );
+		background-color: transparent;
 	}
 	
-	// styling	
+	// styling		
 	.inputForm {
 		.inputList {
 			background-color: white;
@@ -115,7 +149,7 @@ $background: #e6fff2;
 button {
 	margin: 2px;
 	height: 30px;
-	width: 90px;
+	width: 100px;
 	border: none;
 	border-radius: 5px;
 }

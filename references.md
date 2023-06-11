@@ -171,6 +171,8 @@ https://sass-lang.com/documentation/at-rules/mixin
 
 https://developer.mozilla.org/en-US/docs/Web/CSS/filter
 
+https://linuxhint.com/click-through-div-to-underlying-elements-css/
+
 __Generators__:
 https://www.cssmatic.com/box-shadow
 

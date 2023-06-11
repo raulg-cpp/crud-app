@@ -5,11 +5,12 @@ import './App.scss';
 import { useState, useEffect } from 'react';
 
 /* Firebase */ 
-import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore"
-import { db } from "./firebase-config"
+import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore";
+import { db } from "./firebase-config";
 
 /* Other */
-import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER } from "./constants"
+import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER } from "./constants";
+import ubalogo from "./uba-logo.png";
  
 //==== App ====
 function initFlags() {
@@ -115,7 +116,7 @@ function App() {
 		}
 	}	 
 	
-	// 3. Update data // [need to check regex before submiting]
+	// 3. Update data 
 	const handleEdit = async (index) => {
 		if( checkInputs() ) {	
 			let length = dataBase.length;
@@ -154,11 +155,18 @@ function App() {
 	
 	return (
 	<div className="App">
+		<h1 className="watermark">WATERMARK - RAUL GONZALEZ</h1>
 		<div className="mainBox">
-			<h1>Contact Information</h1>
+		
 			{/* Form */}
     		<form className="inputForm" id="input_fields" onSubmit={handleSubmit}>
     			<div className="inputList">
+    				{/* Header */}
+					<div className="title">
+						<img className="logo" alt="" src={ubalogo} />
+						<h1 className="text">Inventario</h1>
+					</div>
+
 					{ INPUT_NAMES.map( (key, index) => { 
 						return (
     					<label key={key}> 
@@ -180,10 +188,10 @@ function App() {
 			
 			{/* create, delete and update buttons */}
 			<div className="submitButtons">
-				<button className="create" type="submit" form="input_fields"> Create </button>	
-    			<button className="delete" onClick={handleDelete}> Delete </button>	
-  				<button className="update" onClick={handleEdit}> Update </button>
-  				<button className="" onClick={resetForm}> Clear </button>
+				<button className="create" type="submit" form="input_fields"> Ingresar </button>	
+    			<button className="delete" onClick={handleDelete}> Eliminar </button>	
+  				<button className="update" onClick={handleEdit}> Cambiar </button>
+  				<button className="" onClick={resetForm}> Limpiar </button>
     		</div>				
 			{/* list output */}
 			
@@ -217,7 +225,7 @@ function App() {
   						<td>
   							<button className={ styleGet(index, "focusBtn") } 
   									onClick={ () => {handleGet(index)} }> 
-  								Select
+  								Seleccionar
   							</button>
   						</td>
   					</tr>); 

@@ -1,6 +1,6 @@
 // Form parameters: 
 
-const INPUT_NAMES = ["Quantity", "Product", "Name", "Email", "Telephone"];	// Defines properties of stored objects
+const INPUT_NAMES = ["Cantidad", "Producto", "Nombre", "Email", "Telefono"];	// Defines properties of stored objects
 		
 		// Regex
 const INPUT_PATTERNS = ["^[1-9]*$",									// Positive Number
