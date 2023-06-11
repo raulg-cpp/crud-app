@@ -3,7 +3,7 @@
 const INPUT_NAMES = ["Cantidad", "Producto", "Nombre", "Email", "Telefono"];	// Defines properties of stored objects
 		
 		// Regex
-const INPUT_PATTERNS = ["^[1-9]*$",									// Positive Number
+const INPUT_PATTERNS = ["^[0-9]+$|^0$",								// Positive Number
 						"^[a-zA-Z0-9]+(?: [a-zA-Z0-9]+)*$",			// No special chars
 					  	"^[A-Z][a-z]+([ ][A-Z][a-z]+)*$",			// Words  
 					  	"[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,}$",	// Email

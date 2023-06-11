@@ -17,7 +17,6 @@ function initFlags() {
 	return Array( INPUT_NAMES.length ).fill(true);
 }
 
-
 function App() {
 	//--- I. State ---
 	
@@ -195,16 +194,15 @@ function App() {
     		</div>				
 			{/* list output */}
 			
+			{ dataBase.length === 0 ? (<></>) : (
 			<table className="tableList" cellSpacing="0" cellPadding="7">
 				{/* header */}
 				<thead>
-				{ dataBase.length === 0 ? (<></>) : (
 					<tr>
     					{ INPUT_NAMES.map( name => {
 							return ( <th key={name}> {name} </th> )	
 						})}
   					</tr>
-  				)}
   				</thead>
   			
   				<tbody>
@@ -232,6 +230,7 @@ function App() {
   				})}
   				</tbody>
 			</table>
+			)}
 		</div>    	
 	</div>
 	);

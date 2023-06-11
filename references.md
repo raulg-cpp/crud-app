@@ -156,6 +156,8 @@ __Regex__:
 _Generators_:
 https://saasbase.dev/tools/regex-generator
 
+https://codepal.ai/regex-generator
+
 _Errors_:
 https://github.com/standard/standard/issues/1491
 
