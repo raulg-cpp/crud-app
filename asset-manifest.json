@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/crud-app/static/css/main.485513c8.css",
-    "main.js": "/crud-app/static/js/main.b9316676.js",
-    "static/js/787.a94a4c69.chunk.js": "/crud-app/static/js/787.a94a4c69.chunk.js",
-    "index.html": "/crud-app/index.html",
-    "main.485513c8.css.map": "/crud-app/static/css/main.485513c8.css.map",
-    "main.b9316676.js.map": "/crud-app/static/js/main.b9316676.js.map",
-    "787.a94a4c69.chunk.js.map": "/crud-app/static/js/787.a94a4c69.chunk.js.map"
+    "main.css": "/crud-app-spanish/static/css/main.129a4eda.css",
+    "main.js": "/crud-app-spanish/static/js/main.a91eed1b.js",
+    "static/js/787.a94a4c69.chunk.js": "/crud-app-spanish/static/js/787.a94a4c69.chunk.js",
+    "static/media/uba-logo.png": "/crud-app-spanish/static/media/uba-logo.e0b83f1c34ea00165b22.png",
+    "index.html": "/crud-app-spanish/index.html",
+    "main.129a4eda.css.map": "/crud-app-spanish/static/css/main.129a4eda.css.map",
+    "main.a91eed1b.js.map": "/crud-app-spanish/static/js/main.a91eed1b.js.map",
+    "787.a94a4c69.chunk.js.map": "/crud-app-spanish/static/js/787.a94a4c69.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.485513c8.css",
-    "static/js/main.b9316676.js"
+    "static/css/main.129a4eda.css",
+    "static/js/main.a91eed1b.js"
   ]
 }
