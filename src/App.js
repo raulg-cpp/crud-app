@@ -159,63 +159,65 @@ function App() {
 	<div className="App">
 		<h1 className="watermark">WATERMARK - RAUL GONZALEZ</h1>
 		<div className="mainBox">
-		
-			{/* Form */}
-    		<form className="inputForm" id="input_fields" onSubmit={handleSubmit}>
-    			<div className="inputList">
-    				{/* Header */}
-					<div className="title">
-						<img className="logo" alt="" src={logo} />
-						<h1 className="text">{TEXT_LABEL.header}</h1>
-					</div>
-
-					{ INPUT_NAMES.map( (key, index) => { 
-						return (
-    					<label key={key}> 
-    						<span>{key}</span>
-							
-							{/* Input fields */}
-							<input 
-								className={ styleError(index) }
-								placeholder={ INPUT_PLACEHOLDER[index] }
-								name={key} 
-								value={inputs[key] || ""} 
-								onChange={handleChange}
-								required
-							/>  
-						</label> ) 					
-					})}
+			<div className="topBox">
+				{/* Header */}
+				<div className="title">
+					<img className="logo" alt="" src={logo} />
+					<h1 className="text">{TEXT_LABEL.header}</h1>
 				</div>
-    		</form>
-			
-			{/* create, delete and update buttons */}
-			<div className="submitButtons">
-				<Tooltip id="create" place="bottom">{BUTTON_TOOLTIP.create}</Tooltip>
-				<button data-tooltip-id="create" 
-  						className="create" type="submit" form="input_fields"> 
-					{TEXT_LABEL.create}
-				</button>	
+						
+				{/* Form */}
+    			<form className="inputForm" id="input_fields" onSubmit={handleSubmit}>
+    				<div className="inputList">
+	
+						{ INPUT_NAMES.map( (key, index) => { 
+							return (
+    						<label key={key}> 
+    							<span>{key}</span>
+								
+								{/* Input fields */}
+								<input 
+									className={ styleError(index) }
+									placeholder={ INPUT_PLACEHOLDER[index] }
+									name={key} 
+									value={inputs[key] || ""} 
+									onChange={handleChange}
+									required
+								/>  
+							</label> ) 					
+						})}
+					</div>
+    			</form>
 				
-    			<Tooltip id="delete" place="bottom">{BUTTON_TOOLTIP.delete}</Tooltip>
-    			<button data-tooltip-id="delete" 
-    					className="delete" onClick={handleDelete}> 
-    				{TEXT_LABEL.delete} 
-    			</button>	
-  				
-  				<Tooltip id="update" place="bottom">{BUTTON_TOOLTIP.update}</Tooltip>
-  				<button data-tooltip-id="update"
-  						className="update" onClick={handleEdit}>
-  					{TEXT_LABEL.update} 
-  				</button>
-  				
-  				<Tooltip id="clear" place="bottom">{BUTTON_TOOLTIP.clear}</Tooltip>
-  				<button data-tooltip-id="clear"
-  						className="" onClick={resetForm}>
-  					{TEXT_LABEL.clear}
-  				</button>
-    		</div>				
-			{/* list output */}
-			
+				{/* create, delete and update buttons */}
+				<div className="submitButtons">
+					<Tooltip id="create" place="bottom">{BUTTON_TOOLTIP.create}</Tooltip>
+					<button data-tooltip-id="create" 
+  							className="create" type="submit" form="input_fields"> 
+						{TEXT_LABEL.create}
+					</button>	
+					
+    				<Tooltip id="delete" place="bottom">{BUTTON_TOOLTIP.delete}</Tooltip>
+    				<button data-tooltip-id="delete" 
+    						className="delete" onClick={handleDelete}> 
+    					{TEXT_LABEL.delete} 
+    				</button>	
+  					
+  					<Tooltip id="update" place="bottom">{BUTTON_TOOLTIP.update}</Tooltip>
+  					<button data-tooltip-id="update"
+  							className="update" onClick={handleEdit}>
+  						{TEXT_LABEL.update} 
+  					</button>
+  					
+  					<Tooltip id="clear" place="bottom">{BUTTON_TOOLTIP.clear}</Tooltip>
+  					<button data-tooltip-id="clear"
+  							className="clear" onClick={resetForm}>
+  						{TEXT_LABEL.clear}
+  					</button>
+    			</div>				
+			</div>
+
+			{/* list output */}			
 			{ dataBase.length === 0 ? (<></>) : (
 			<table className="tableList" cellSpacing="0" cellPadding="7">
 				{/* header */}

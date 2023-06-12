@@ -24,19 +24,18 @@ $break-width: 900px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 
 	vertical-align: middle;
-	padding-bottom: 10px;
-	
+	margin-right: 20px;
+
 	.text {
-		padding-left: 10px;
-		color: darken(#66ccff, 20%);
+		color: darken(#66ccff, 15%);
 	}
 	
 	.logo {
 		width: 100%;
-		max-width: 100px;
-		display: inline;
+		max-width: 140px;
 		aspect-ratio: 1/1;
 	}
 }
@@ -56,6 +55,13 @@ $break-width: 900px;
 	box-shadow: 0px 0px 10px 5px rgba(0,0,0,0.2);
 }
 
+.topBox {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+}
+
 /* Responsive */
 @media (max-width: $break-width) { 
 	// Mobile screen
@@ -73,7 +79,7 @@ $break-width: 900px;
 		background-color: transparent;
 	}
 	
-	// styling		
+	// styling			
 	.inputForm {
 		.inputList {
 			background-color: white;
@@ -104,7 +110,6 @@ $break-width: 900px;
 
 
 // Form
-
 .errorField {
 	outline: 2px solid red !important;
 }
@@ -113,12 +118,12 @@ $break-width: 900px;
 	display: flex;
 	justify-content: center;
 	width: 100%;
+	max-width: 400px;
 
 	.inputList {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: 400px;
 		
 		label {
 			margin-bottom: 10px;
@@ -162,7 +167,18 @@ button:active {
 
 
 .submitButtons {
-	width: 100%;	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	
+	padding-left: 0px;
+	
+	button {
+		min-width: 120px;
+		margin: 15px;
+	}
+	
 	// variants
 	.delete {
 		background-color: red;
@@ -174,6 +190,9 @@ button:active {
 	}
 	.update {
 		background-color: gold;
+	}
+	.clear {
+		background-color: darken(white, 10%);
 	}
 }
 
