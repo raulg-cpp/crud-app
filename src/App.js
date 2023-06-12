@@ -4,12 +4,15 @@
 import './App.scss';
 import { useState, useEffect } from 'react';
 
+/* Components */
+import { Tooltip } from 'react-tooltip'
+
 /* Firebase */ 
 import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebase/firestore";
 import { db } from "./firebase-config";
 
 /* Other */
-import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL } from "./constants";
+import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL, BUTTON_TOOLTIP } from "./constants";
 import logo from "./logo.png";
  
 //==== App ====
@@ -187,16 +190,27 @@ function App() {
 			
 			{/* create, delete and update buttons */}
 			<div className="submitButtons">
-				<button className="create" type="submit" form="input_fields"> 
+				<Tooltip id="create" place="bottom">{BUTTON_TOOLTIP.create}</Tooltip>
+				<button data-tooltip-id="create" 
+  						className="create" type="submit" form="input_fields"> 
 					{TEXT_LABEL.create}
 				</button>	
-    			<button className="delete" onClick={handleDelete}> 
+				
+    			<Tooltip id="delete" place="bottom">{BUTTON_TOOLTIP.delete}</Tooltip>
+    			<button data-tooltip-id="delete" 
+    					className="delete" onClick={handleDelete}> 
     				{TEXT_LABEL.delete} 
     			</button>	
-  				<button className="update" onClick={handleEdit}>
+  				
+  				<Tooltip id="update" place="bottom">{BUTTON_TOOLTIP.update}</Tooltip>
+  				<button data-tooltip-id="update"
+  						className="update" onClick={handleEdit}>
   					{TEXT_LABEL.update} 
   				</button>
-  				<button className="" onClick={resetForm}>
+  				
+  				<Tooltip id="clear" place="bottom">{BUTTON_TOOLTIP.clear}</Tooltip>
+  				<button data-tooltip-id="clear"
+  						className="" onClick={resetForm}>
   					{TEXT_LABEL.clear}
   				</button>
     		</div>				
@@ -229,8 +243,9 @@ function App() {
 					<tr key={id}>
   						{ outputList }
   						<td>
-  							<button className={ styleGet(index, "focusBtn") } 
-  									onClick={ () => {handleGet(index)} }> 
+  							<Tooltip id="select" place="bottom">{BUTTON_TOOLTIP.select}</Tooltip>
+  							<button data-tooltip-id="select" 
+  									className={ styleGet(index, "focusBtn") } onClick={ () => {handleGet(index)} }> 
   								{TEXT_LABEL.select}
   							</button>
   						</td>

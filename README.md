@@ -7,6 +7,7 @@ Esta página usa:
 - [React](https://react.dev/)
 - [Sass](https://sass-lang.com/)
 - [Firebase](https://firebase.google.com/)
+- [React-tooltip](https://www.npmjs.com/package/react-tooltip)
 
 ## Acceder
 Puedes ver la página aquí: https://raulg-cpp.github.io/crud-app-spanish/

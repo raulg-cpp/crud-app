@@ -22,5 +22,12 @@ const TEXT_LABEL = { header: "Inventario",
 					 clear: "Limpiar", 
 					 update: "Cambiar",
 					 select: "Seleccionar" };
+					
+	// Popup messages for buttons
+const BUTTON_TOOLTIP = { create: "Ingresar un registro nuevo",
+					 	 delete: "Eliminar el registro seleccionado",
+					 	 clear: "Vaciar el formulario", 
+					 	 update: "Cambiar el registro seleccionado",
+					 	 select: "Enfocarse en este registro" };
 
-export { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL };
+export { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL, BUTTON_TOOLTIP };
