@@ -10,9 +10,17 @@ const INPUT_PATTERNS = ["^[0-9]+$|^0$",								// Positive Number
 					  	"^[0-9]{1,3}-[0-9]{3}-[0-9]{3}-[0-9]{4}$"];	// Telephone 
  
 const INPUT_PLACEHOLDER = [	"1",
-							"label", 
-							"First Last",
+							"nombre", 
+							"Nombre Apellido",
 							"user@host.domain", 
 							"1-100-200-3000" ];
+							
+// Labels
+const TEXT_LABEL = { header: "Inventario",
+					 create: "Ingresar",
+					 delete: "Eliminar",
+					 clear: "Limpiar", 
+					 update: "Cambiar",
+					 select: "Seleccionar" };
 
-export { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER };
+export { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL };

@@ -9,8 +9,8 @@ import { addDoc, getDocs, collection, doc, deleteDoc, updateDoc } from "@firebas
 import { db } from "./firebase-config";
 
 /* Other */
-import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER } from "./constants";
-import ubalogo from "./uba-logo.png";
+import { INPUT_NAMES, INPUT_PATTERNS, INPUT_PLACEHOLDER, TEXT_LABEL } from "./constants";
+import logo from "./logo.png";
  
 //==== App ====
 function initFlags() {
@@ -162,8 +162,8 @@ function App() {
     			<div className="inputList">
     				{/* Header */}
 					<div className="title">
-						<img className="logo" alt="" src={ubalogo} />
-						<h1 className="text">Inventario</h1>
+						<img className="logo" alt="" src={logo} />
+						<h1 className="text">{TEXT_LABEL.header}</h1>
 					</div>
 
 					{ INPUT_NAMES.map( (key, index) => { 
@@ -187,10 +187,18 @@ function App() {
 			
 			{/* create, delete and update buttons */}
 			<div className="submitButtons">
-				<button className="create" type="submit" form="input_fields"> Ingresar </button>	
-    			<button className="delete" onClick={handleDelete}> Eliminar </button>	
-  				<button className="update" onClick={handleEdit}> Cambiar </button>
-  				<button className="" onClick={resetForm}> Limpiar </button>
+				<button className="create" type="submit" form="input_fields"> 
+					{TEXT_LABEL.create}
+				</button>	
+    			<button className="delete" onClick={handleDelete}> 
+    				{TEXT_LABEL.delete} 
+    			</button>	
+  				<button className="update" onClick={handleEdit}>
+  					{TEXT_LABEL.update} 
+  				</button>
+  				<button className="" onClick={resetForm}>
+  					{TEXT_LABEL.clear}
+  				</button>
     		</div>				
 			{/* list output */}
 			
@@ -223,7 +231,7 @@ function App() {
   						<td>
   							<button className={ styleGet(index, "focusBtn") } 
   									onClick={ () => {handleGet(index)} }> 
-  								Seleccionar
+  								{TEXT_LABEL.select}
   							</button>
   						</td>
   					</tr>); 
